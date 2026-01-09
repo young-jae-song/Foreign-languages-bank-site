@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>관리자 페이지 - 외국어 문제 추가/수정/삭제</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+            href="[fonts.googleapis.com](https://fonts.googleapis.com/css?family=Nunito:200)
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <div class="sidebar-brand-text mx-3">관리자 페이지</div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="index.html">
+                <span>대쉬보드</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            매출
+        </div>
+
+        <li class="nav-item">
+            <a class="nav-link" href="inquery-daily.html">
+                <span>일일 유저 접속 수</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="inquery-join.html">
+                <span>가입자 수</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="inquery-revenue.html">
+                <span>수익 그래프</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="inquery-subject.html">
+                <span>과목 분포</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            사용자
+        </div>
+
+        <li class="nav-item">
+            <a class="nav-link" href="tables.html">
+                <span>개인정보 확인/수정/삭제</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            유저 관리
+        </div>
+
+        <!-- 현재 페이지 활성 -->
+        <li class="nav-item active">
+            <a class="nav-link" href="charts.html">
+                <span>문제 추가/수정/삭제</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            문의 관리
+        </div>
+
+        <li class="nav-item">
+            <a class="nav-link" href="inquery.html">
+                <span>문의 내역</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            광고 관리
+        </div>
+
+        <li class="nav-item">
+            <a class="nav-link" href="advertisement.html">
+                <span>광고 관리</span>
+            </a>
+        </li>
+
+        <!-- Sidebar Toggler -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow">
+                <span class="navbar-brand mb-0 h5">외국어 문제 추가 / 수정 / 삭제</span>
+            </nav>
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <h1 class="h3 mb-4 text-gray-800">외국어 문제 관리</h1>
+
+                <!-- 상단: 필터 + 신규 문제 등록 폼 -->
+                <div class="row">
+
+                    <!-- 필터 카드 -->
+                    <div class="col-lg-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">필터</h6>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label>과목</label>
+                                        <select id="filterSubject" class="form-control">
+                                            <option value="all">전체</option>
+                                            <option value="영어">영어</option>
+                                            <option value="일본어">일본어</option>
+                                            <option value="중국어">중국어</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>난이도</label>
+                                        <select id="filterLevel" class="form-control">
+                                            <option value="all">전체</option>
+                                            <option value="초">초</option>
+                                            <option value="중">중</option>
+                                            <option value="고">고</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>검색 (문제/해설)</label>
+                                        <input type="text" id="filterSearch" class="form-control"
+                                               placeholder="키워드 입력">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 문제 추가/수정 폼 -->
+                    <div class="col-lg-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                                <h6 class="m-0 font-weight-bold text-primary" id="questionFormTitle">문제 등록 / 수정</h6>
+                                <button type="button" class="btn btn-sm btn-secondary" id="resetQuestionFormBtn">새 문제 작성</button>
+                            </div>
+                            <div class="card-body">
+                                <form id="questionForm">
+                                    <input type="hidden" id="questionId">
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label>과목</label>
+                                            <select class="form-control" id="questionSubject" required>
+                                                <option value="">선택</option>
+                                                <option value="영어">영어</option>
+                                                <option value="일본어">일본어</option>
+                                                <option value="중국어">중국어</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>난이도</label>
+                                            <select class="form-control" id="questionLevel" required>
+                                                <option value="초">초</option>
+                                                <option value="중" selected>중</option>
+                                                <option value="고">고</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>출처/연도</label>
+                                            <input type="text" class="form-control" id="questionSource"
+                                                   placeholder="예: GPT 모의고사 2025 영어 1회">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>문제 내용</label>
+                                        <textarea class="form-control" id="questionContent" rows="3"
+                                                  placeholder="문제 지문을 입력하세요. (빈칸은 ____ 로 표시해도 됩니다.)"
+                                                  required></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>보기 (객관식 4지선다)</label>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>1번 보기</label>
+                                                <input type="text" class="form-control" id="choice1" placeholder="1번 보기 내용을 입력하세요">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>2번 보기</label>
+                                                <input type="text" class="form-control" id="choice2" placeholder="2번 보기 내용을 입력하세요">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>3번 보기</label>
+                                                <input type="text" class="form-control" id="choice3" placeholder="3번 보기 내용을 입력하세요">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>4번 보기</label>
+                                                <input type="text" class="form-control" id="choice4" placeholder="4번 보기 내용을 입력하세요">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label>정답 번호 (1~4)</label>
+                                            <input type="number" class="form-control" id="questionAnswer" min="1"
+                                                   max="4" value="1" required>
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            <label>해설</label>
+                                            <textarea class="form-control" id="questionExplanation" rows="2"
+                                                      placeholder="정답/오답에 대한 간단한 해설을 적어주세요."></textarea>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">저장</button>
+                                    <button type="button" class="btn btn-danger d-none"
+                                            id="questionDeleteBtn">삭제</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 하단: 문제 리스트 테이블 -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">문제 목록</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+                            <table class="table table-bordered mb-0" id="questionTable">
+                                <thead>
+                                <tr>
+                                    <th>번호</th>
+                                    <th>과목</th>
+                                    <th>난이도</th>
+                                    <th>출처/연도</th>
+                                    <th>문제 내용</th>
+                                    <th>정답</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- JS로 자동 채우기 -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <small class="text-muted">테이블 행을 클릭하면 위 폼에서 수정/삭제할 수 있습니다.</small>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; 외국어 문제 풀이 사이트 관리자</span>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
+
+<!-- 페이지 전용 스크립트 -->
+<script>
+// ===== 공통 키 =====
+const STORAGE_KEY_QUESTIONS = 'questions';
+const STORAGE_KEY_ACTIVITIES = 'adminActivities';
+
+function loadQuestionsFromStorage() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY_QUESTIONS);
+        if (!raw) return null;
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? arr : null;
+    } catch (e) {
+        return null;
+    }
+}
+function saveQuestionsToStorage(list) {
+    localStorage.setItem(STORAGE_KEY_QUESTIONS, JSON.stringify(list));
+}
+function addAdminActivity(type, message) {
+    const map = {
+        question: { badge: '문제 관리', badgeClass: 'badge-primary', target: 'charts.html' },
+        inquiry:  { badge: '문의',     badgeClass: 'badge-info',    target: 'inquery.html' },
+        ad:       { badge: '광고',     badgeClass: 'badge-warning', target: 'advertisement.html' },
+        user:     { badge: '사용자',   badgeClass: 'badge-success', target: 'tables.html' }
+    };
+    const conf = map[type] || map.question;
+    const now = new Date();
+    const timeStr = now.toLocaleString('ko-KR');
+
+    let list = [];
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY_ACTIVITIES);
+        if (raw) list = JSON.parse(raw);
+    } catch (e) { list = []; }
+
+    list.push({
+        time: timeStr,
+        message,
+        badge: conf.badge,
+        badgeClass: conf.badgeClass,
+        target: conf.target
+    });
+    localStorage.setItem(STORAGE_KEY_ACTIVITIES, JSON.stringify(list));
+}
+
+// ===== 1. 초기 문제 데이터 =====
+let QUESTION_ID_SEQ = 1;
+function createQuestion(subject, level, source, content, choices, answerNumber, explanation) {
+    return {
+        id: QUESTION_ID_SEQ++,
+        subject,
+        level,
+        source,
+        content,
+        choices,
+        answer: answerNumber,
+        explanation
+    };
+}
+function generateDefaultQuestions() {
+    const list = [];
+    // 영어 100
+    for (let i = 1; i <= 100; i++) {
+        const n = i % 5;
+        if (n === 1) {
+            list.push(createQuestion(
+                '영어','중','GPT 모의고사 2025 영어 1회',
+                `Q${i}. She ____ to school every day.`,
+                ['go','goes','went','gone'],2,
+                '주어 She + every day → 일반 현재, goes'
+            ));
+        } else if (n === 2) {
+            list.push(createQuestion(
+                '영어','중','GPT 모의고사 2025 영어 2회',
+                `Q${i}. The meeting starts ____ 3 p.m. tomorrow.`,
+                ['in','on','at','for'],3,
+                '시각 앞에는 at'
+            ));
+        } else if (n === 3) {
+            list.push(createQuestion(
+                '영어','중','GPT 모의고사 2025 영어 3회',
+                `Q${i}. He decided ____ abroad next year.`,
+                ['studies','studying','to study','studied'],3,
+                'decide + to부정사'
+            ));
+        } else if (n === 4) {
+            list.push(createQuestion(
+                '영어','고','GPT 모의고사 2025 영어 4회',
+                `Q${i}. This is the book ____ I bought yesterday.`,
+                ['who','which','where','what'],2,
+                '사물 선행사 → which'
+            ));
+        } else {
+            list.push(createQuestion(
+                '영어','고','GPT 모의고사 2025 영어 5회',
+                `Q${i}. The company plans to ____ a new product next month.`,
+                ['reduce','release','remove','realize'],2,
+                '제품을 출시하다 → release'
+            ));
+        }
+    }
+    // 일본어 100
+    for (let i = 1; i <= 100; i++) {
+        const n = i % 5;
+        if (n === 1) {
+            list.push(createQuestion(
+                '일본어','중','GPT 模擬試験 2025 日本語 1回',
+                `Q${i}. 次の文の（　）に入る最も適切なものを選びなさい。  
+私は日本語（　）好きです。`,
+                ['は','が','を','に'],1,
+                '주제: 私は日本語は好きです。'
+            ));
+        } else if (n === 2) {
+            list.push(createQuestion(
+                '일본어','중','GPT 模擬試験 2025 日本語 2回',
+                `Q${i}. 学校（　）行きます。`,
+                ['へ','を','で','と'],1,
+                '방향 → へ/に'
+            ));
+        } else if (n === 3) {
+            list.push(createQuestion(
+                '일본어','중','GPT 模擬試験 2025 日本語 3回',
+                `Q${i}. 동사를 て形으로 바꿔 빈칸을 채우시오。  
+毎朝コーヒーを（　）飲みます。`,
+                ['飲んで','飲みて','飲んでて','飲んだで'],1,
+                '飲む → 飲んで'
+            ));
+        } else if (n === 4) {
+            list.push(createQuestion(
+                '일본어','고','GPT 模擬試験 2025 日本語 4回',
+                `Q${i}. 손님에게 공손하게 말하는 표현。  
+少々こちらでお待ち（　）。`,
+                ['して','してくれ','してください','いただきます'],3,
+                'お待ちください。'
+            ));
+        } else {
+            list.push(createQuestion(
+                '일본어','고','GPT 模擬試験 2025 日本語 5回',
+                `Q${i}. 文の意味に合うもの。  
+彼は約束の時間に（　）、皆を待たせてしまった。`,
+                ['遅れて','急いで','慣れて','迷って'],1,
+                '약속 시간에 늦어서 → 遅れて'
+            ));
+        }
+    }
+    // 중국어 100
+    for (let i = 1; i <= 100; i++) {
+        const n = i % 5;
+        if (n === 1) {
+            list.push(createQuestion(
+                '중국어','중','GPT 模拟考试 2025 汉语 第1回',
+                `Q${i}. 她是一个很聪明（　）学生。`,
+                ['的','地','得','了'],1,
+                '형용사 + 的 + 명사'
+            ));
+        } else if (n === 2) {
+            list.push(createQuestion(
+                '중국어','중','GPT 模拟考试 2025 汉语 第2回',
+                `Q${i}. 他在韩国住了三年（　）回来。`,
+                ['才','也','就','都'],1,
+                '住了三年才回来。'
+            ));
+        } else if (n === 3) {
+            list.push(createQuestion(
+                '중국어','중','GPT 模拟考试 2025 汉语 第3回',
+                `Q${i}. 我每天八点（　）学校。`,
+                ['在','到','给','从'],2,
+                '到学校。'
+            ));
+        } else if (n === 4) {
+            list.push(createQuestion(
+                '중국어','고','GPT 模拟考试 2025 汉语 第4回',
+                `Q${i}. 作业你写（　）了吗？`,
+                ['完','到','起','下'],1,
+                '写完了吗？'
+            ));
+        } else {
+            list.push(createQuestion(
+                '중국어','고','GPT 模拟考试 2025 汉语 第5回',
+                `Q${i}. 今天（　）昨天冷多了。`,
+                ['比','跟','向','给'],1,
+                '今天比昨天冷多了。'
+            ));
+        }
+    }
+    return list;
+}
+
+// localStorage에서 불러오거나, 없으면 300문제 생성
+let questions = loadQuestionsFromStorage();
+if (!questions) {
+    questions = generateDefaultQuestions();
+    saveQuestionsToStorage(questions);
+}
+if (questions.length > 0) {
+    QUESTION_ID_SEQ = Math.max(...questions.map(q => q.id)) + 1;
+}
+
+// ===== 2. 테이블 렌더링 =====
+const tableBody = document.querySelector('#questionTable tbody');
+
+function renderTable() {
+    const subjectFilter = document.getElementById('filterSubject').value;
+    const levelFilter = document.getElementById('filterLevel').value;
+    const searchText = document.getElementById('filterSearch').value.trim().toLowerCase();
+
+    tableBody.innerHTML = '';
+
+    questions
+        .filter(q => {
+            if (subjectFilter !== 'all' && q.subject !== subjectFilter) return false;
+            if (levelFilter !== 'all' && q.level !== levelFilter) return false;
+            if (searchText) {
+                const target = (q.content + ' ' + (q.explanation || '')).toLowerCase();
+                if (!target.includes(searchText)) return false;
+            }
+            return true;
+        })
+        .sort((a, b) => a.id - b.id)
+        .forEach(q => {
+            const tr = document.createElement('tr');
+            tr.dataset.id = q.id;
+            const shortContent = q.content.length > 30
+                ? q.content.slice(0, 30) + '...'
+                : q.content;
+            tr.innerHTML = `
+                <td>${q.id}</td>
+                <td>${q.subject}</td>
+                <td>${q.level}</td>
+                <td>${q.source || '-'}</td>
+                <td>${shortContent}</td>
+                <td>${q.answer}</td>
+            `;
+            tableBody.appendChild(tr);
+        });
+
+    if (tableBody.children.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td colspan="6" class="text-center text-muted">
+                조건에 맞는 문제가 없습니다.
+            </td>`;
+        tableBody.appendChild(tr);
+    }
+}
+renderTable();
+document.getElementById('filterSubject').addEventListener('change', renderTable);
+document.getElementById('filterLevel').addEventListener('change', renderTable);
+document.getElementById('filterSearch').addEventListener('input', renderTable);
+
+// ===== 3. 폼 요소 =====
+const questionForm = document.getElementById('questionForm');
+const questionFormTitle = document.getElementById('questionFormTitle');
+const resetQuestionFormBtn = document.getElementById('resetQuestionFormBtn');
+const questionDeleteBtn = document.getElementById('questionDeleteBtn');
+
+const idInput = document.getElementById('questionId');
+const subjectInput = document.getElementById('questionSubject');
+const levelInput = document.getElementById('questionLevel');
+const sourceInput = document.getElementById('questionSource');
+const contentInput = document.getElementById('questionContent');
+const choice1Input = document.getElementById('choice1');
+const choice2Input = document.getElementById('choice2');
+const choice3Input = document.getElementById('choice3');
+const choice4Input = document.getElementById('choice4');
+const answerInput = document.getElementById('questionAnswer');
+const explanationInput = document.getElementById('questionExplanation');
+
+function resetForm() {
+    idInput.value = '';
+    subjectInput.value = '';
+    levelInput.value = '중';
+    sourceInput.value = '';
+    contentInput.value = '';
+    choice1Input.value = '';
+    choice2Input.value = '';
+    choice3Input.value = '';
+    choice4Input.value = '';
+    answerInput.value = 1;
+    explanationInput.value = '';
+    questionDeleteBtn.classList.add('d-none');
+    questionFormTitle.textContent = '문제 등록';
+}
+resetQuestionFormBtn.addEventListener('click', resetForm);
+resetForm();
+
+// 테이블 행 클릭 → 폼 채우기
+tableBody.addEventListener('click', (event) => {
+    const tr = event.target.closest('tr');
+    if (!tr || !tr.dataset.id) return;
+    const id = Number(tr.dataset.id);
+    const q = questions.find(item => item.id === id);
+    if (!q) return;
+
+    idInput.value = q.id;
+    subjectInput.value = q.subject;
+    levelInput.value = q.level || '중';
+    sourceInput.value = q.source || '';
+    contentInput.value = q.content || '';
+
+    const c = q.choices || [];
+    choice1Input.value = c[0] || '';
+    choice2Input.value = c[1] || '';
+    choice3Input.value = c[2] || '';
+    choice4Input.value = c[3] || '';
+
+    answerInput.value = q.answer || 1;
+    explanationInput.value = q.explanation || '';
+
+    questionDeleteBtn.classList.remove('d-none');
+    questionFormTitle.textContent = `문제 수정 (ID: ${q.id})`;
+});
+
+// 저장(등록/수정)
+questionForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const subject = subjectInput.value;
+    const level = levelInput.value;
+    const source = sourceInput.value.trim();
+    const content = contentInput.value.trim();
+    const choices = [
+        choice1Input.value.trim(),
+        choice2Input.value.trim(),
+        choice3Input.value.trim(),
+        choice4Input.value.trim()
+    ];
+    const answerNum = Number(answerInput.value);
+    const explanation = explanationInput.value.trim();
+
+    if (!subject || !level || !content) {
+        alert('과목, 난이도, 문제 내용은 필수입니다.');
+        return;
+    }
+    if (!(answerNum >= 1 && answerNum <= 4)) {
+        alert('정답 번호는 1~4 사이여야 합니다.');
+        return;
+    }
+
+    const idVal = idInput.value;
+
+    if (idVal) {
+        const id = Number(idVal);
+        const idx = questions.findIndex(q => q.id === id);
+        if (idx !== -1) {
+            questions[idx] = {
+                ...questions[idx],
+                subject,
+                level,
+                source,
+                content,
+                choices,
+                answer: answerNum,
+                explanation
+            };
+            addAdminActivity('question', `문제 수정 (ID: ${id}, 과목: ${subject})`);
+            alert('문제가 수정되었습니다.');
+        }
+    } else {
+        const newQuestion = {
+            id: QUESTION_ID_SEQ++,
+            subject,
+            level,
+            source,
+            content,
+            choices,
+            answer: answerNum,
+            explanation
+        };
+        questions.push(newQuestion);
+        addAdminActivity('question', `새 문제 등록 (ID: ${newQuestion.id}, 과목: ${subject})`);
+        alert('새 문제가 등록되었습니다.');
+    }
+
+    // 항상 localStorage 반영
+    saveQuestionsToStorage(questions);
+
+    renderTable();
+    resetForm();
+});
+
+// 삭제
+questionDeleteBtn.addEventListener('click', () => {
+    const idVal = idInput.value;
+    if (!idVal) return;
+    if (!confirm('정말 이 문제를 삭제하시겠습니까?')) return;
+
+    const id = Number(idVal);
+    const target = questions.find(q => q.id === id);
+    const subject = target ? target.subject : '';
+
+    questions = questions.filter(q => q.id !== id);
+    addAdminActivity('question', `문제 삭제 (ID: ${id}, 과목: ${subject})`);
+    alert('문제가 삭제되었습니다.');
+
+    saveQuestionsToStorage(questions);
+
+    renderTable();
+    resetForm();
+});
+</script>
+
+</body>
+</html>

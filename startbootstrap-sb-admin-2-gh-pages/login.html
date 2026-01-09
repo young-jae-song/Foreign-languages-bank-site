@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>외국어 문제풀이 사이트 - 로그인</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-primary">
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-9 col-md-10">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <h1 class="h4 text-gray-900 mb-2">외국어 문제풀이 사이트</h1>
+                        <p class="mb-0">일반 사용자 / 관리자 로그인을 선택해서 진행하세요.</p>
+                    </div>
+
+                    <div class="row">
+                        <!-- 일반 로그인 -->
+                        <div class="col-md-6 border-right">
+                            <h5 class="text-primary mb-3 text-center">일반 사용자 로그인</h5>
+                            <form id="userLoginForm">
+                                <div class="form-group">
+                                    <label for="userId">아이디</label>
+                                    <input type="text" class="form-control" id="userId" required
+                                           placeholder="예: user01 또는 가입한 아이디">
+                                </div>
+                                <div class="form-group">
+                                    <label for="userPw">비밀번호</label>
+                                    <input type="password" class="form-control" id="userPw" required
+                                           placeholder="비밀번호 입력">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    로그인
+                                </button>
+                            </form>
+                            <small class="text-muted d-block mt-2">
+                                기본 예시 계정: <b>user01 / pass1234</b>
+                            </small>
+                            <div class="mt-3 text-center">
+                                <a class="small" href="register.html">아직 계정이 없나요? 회원가입</a>
+                            </div>
+                        </div>
+
+                        <!-- 관리자 로그인 -->
+                        <div class="col-md-6">
+                            <h5 class="text-danger mb-3 text-center">관리자 로그인</h5>
+                            <form id="adminLoginForm">
+                                <div class="form-group">
+                                    <label for="adminId">관리자 아이디</label>
+                                    <input type="text" class="form-control" id="adminId" required
+                                           placeholder="예: admin">
+                                </div>
+                                <div class="form-group">
+                                    <label for="adminPw">관리자 비밀번호</label>
+                                    <input type="password" class="form-control" id="adminPw" required
+                                           placeholder="비밀번호 입력">
+                                </div>
+                                <button type="submit" class="btn btn-danger btn-block">
+                                    관리자 로그인
+                                </button>
+                            </form>
+                            <small class="text-muted d-block mt-2">
+                                예시 관리자: <b>admin / admin1234</b>
+                            </small>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+
+<script>
+const DEMO_USER_ID = 'user01';
+const DEMO_USER_PW = 'pass1234';
+const ADMIN_ID = 'admin';
+const ADMIN_PW = 'admin1234';
+const STORAGE_KEY_USERS = 'users';
+
+function loadUsers() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY_USERS);
+        if (!raw) return [];
+        return JSON.parse(raw);
+    } catch (e) { return []; }
+}
+
+document.getElementById('userLoginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const id = document.getElementById('userId').value.trim();
+    const pw = document.getElementById('userPw').value.trim();
+
+    const users = loadUsers();
+
+    // 데모 계정
+    if (id === DEMO_USER_ID && pw === DEMO_USER_PW) {
+        alert('일반 사용자(데모 계정)로 로그인되었습니다.');
+        localStorage.setItem('currentUserId', id);
+        location.href = 'user-quiz.html';
+        return;
+    }
+
+    const found = users.find(u => u.id === id && u.pw === pw);
+    if (!found) {
+        alert('아이디 또는 비밀번호가 올바르지 않습니다.');
+        return;
+    }
+
+    // 상태/제재 체크
+    const status = (found.status || 'active').toLowerCase();
+    const banned = !!found.banned;
+    const suspendedUntil = found.suspendedUntil ? new Date(found.suspendedUntil) : null;
+
+    if (banned || status === 'withdrawn') {
+        alert('해당 계정은 탈퇴 처리되어 더 이상 사용할 수 없습니다.\n관리자에게 문의해주세요.');
+        return;
+    }
+
+    if (status === 'suspended') {
+        if (suspendedUntil && !isNaN(suspendedUntil)) {
+            const now = new Date();
+            if (now < suspendedUntil) {
+                alert('해당 계정은 정지 상태입니다.\n정지 해제 시각: ' +
+                    suspendedUntil.toLocaleString('ko-KR'));
+                return;
+            }
+        }
+        // 정지 기간이 지났다면 자동으로 active로 전환
+        found.status = 'active';
+        found.suspendedUntil = null;
+        localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(users));
+    }
+
+    alert('일반 사용자로 로그인되었습니다.');
+    localStorage.setItem('currentUserId', id);
+    location.href = 'user-quiz.html';
+});
+
+document.getElementById('adminLoginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const id = document.getElementById('adminId').value.trim();
+    const pw = document.getElementById('adminPw').value.trim();
+
+    if (id === ADMIN_ID && pw === ADMIN_PW) {
+        alert('관리자로 로그인되었습니다.');
+        location.href = 'index.html';
+    } else {
+        alert('관리자 아이디 또는 비밀번호가 올바르지 않습니다.');
+    }
+});
+</script>
+
+</body>
+</html>

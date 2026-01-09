@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>관리자 페이지 - 설정</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css?family=Nunito:200) rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body id="page-top">
+
+<div id="wrapper">
+
+    <!-- Sidebar 동일 -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <div class="sidebar-brand-text mx-3">관리자 페이지</div>
+        </a>
+
+        <hr class="sidebar-divider my-0">
+        <li class="nav-item">
+            <a class="nav-link" href="index.html"><span>대쉬보드</span></a>
+        </li>
+
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">매출</div>
+        <li class="nav-item"><a class="nav-link" href="inquery-daily.html"><span>일일 유저 접속 수</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="inquery-join.html"><span>가입자 수</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="inquery-revenue.html"><span>수익 그래프</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="inquery-subject.html"><span>외국어 과목 분포</span></a></li>
+
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">사용자</div>
+        <li class="nav-item"><a class="nav-link" href="tables.html"><span>개인정보 확인/수정/삭제</span></a></li>
+
+        <hr class="sidebar-divider d-none d-md-block">
+        <div class="sidebar-heading">유저 관리</div>
+        <li class="nav-item"><a class="nav-link" href="charts.html"><span>외국어 문제 추가/수정/삭제</span></a></li>
+
+        <hr class="sidebar-divider d-none d-md-block">
+        <div class="sidebar-heading">문의 관리</div>
+        <li class="nav-item"><a class="nav-link" href="inquery.html"><span>문의 내역</span></a></li>
+
+        <hr class="sidebar-divider d-none d-md-block">
+        <div class="sidebar-heading">광고 관리</div>
+        <li class="nav-item"><a class="nav-link" href="advertisement.html"><span>광고 관리</span></a></li>
+
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+    </ul>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <div id="content">
+
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow">
+                <span class="navbar-brand mb-0 h5">관리자 설정</span>
+            </nav>
+
+            <div class="container-fluid">
+
+                <h1 class="h3 mb-4 text-gray-800">프로필 / 알림 / 사이트 설정</h1>
+
+                <div class="row">
+                    <!-- 알림 설정 -->
+                    <div class="col-lg-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">알림 설정</h6>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="notifyEmail" checked>
+                                            <label class="custom-control-label" for="notifyEmail">이메일 알림 받기</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="notifyInquery" checked>
+                                            <label class="custom-control-label" for="notifyInquery">새 문의 발생 시 알림</label>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="alert('데모: 실제 저장은 아직 연결되지 않았습니다.');">저장</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 사이트 표시 설정 -->
+                    <div class="col-lg-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">사이트 표시 설정</h6>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label>관리자 기본 언어</label>
+                                        <select class="form-control">
+                                            <option>한국어</option>
+                                            <option>English</option>
+                                            <option>日本語</option>
+                                            <option>中文</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>대쉬보드 기본 기간</label>
+                                        <select class="form-control">
+                                            <option>최근 7일</option>
+                                            <option>최근 30일</option>
+                                            <option>최근 90일</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="alert('데모: 실제 저장은 아직 연결되지 않았습니다.');">저장</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; 외국어 문제 풀이 사이트 관리자</span>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+</div>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+
+</body>
+</html>

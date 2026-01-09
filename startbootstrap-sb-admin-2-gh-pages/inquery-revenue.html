@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>관리자 페이지 - 수익 그래프</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="[fonts.googleapis.com](https://fonts.googleapis.com/css?family=Nunito:200)
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-text mx-3">관리자 페이지</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">
+                    <span>대쉬보드</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                매출
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="inquery-daily.html">
+                    <span>일일 유저 접속 수</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="inquery-join.html">
+                    <span>가입자 수</span>
+                </a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="inquery-revenue.html">
+                    <span>수익 그래프</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="inquery-subject.html">
+                    <span>과목 분포</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                사용자
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="tables.html">
+                    <span>개인정보 확인/수정/삭제</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                유저 관리
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="charts.html">
+                    <span>문제 추가/수정/삭제</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                문의 관리
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="inquery.html">
+                    <span>문의 내역</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                광고 관리
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="advertisement.html">
+                    <span>광고 관리</span>
+                </a>
+            </li>
+
+            <!-- Sidebar Toggler -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow">
+                    <span class="navbar-brand mb-0 h5">수익 그래프</span>
+                </nav>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <h1 class="h3 mb-4 text-gray-800">수익 통계</h1>
+
+                    <!-- 그래프 카드 -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">최근 7일 일일 수익</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-area" style="height: 300px;">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 데이터 표 카드 -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">최근 7일 수익 상세 데이터</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered mb-0" id="revenueTable">
+                                    <thead>
+                                        <tr>
+                                            <th>날짜</th>
+                                            <th>수익 (원)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- JS로 자동 채우기 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; 문제 풀이 사이트 관리자</span>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Chart.js -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- 페이지 전용 스크립트 -->
+    <script>
+        // ===== 1. "진짜 같은" 수익 데이터 (원 단위) =====
+        const revenueData = [
+            { date: '2025-11-18', amount: 120000 },
+            { date: '2025-11-19', amount: 150000 },
+            { date: '2025-11-20', amount: 175000 },
+            { date: '2025-11-21', amount: 130000 },
+            { date: '2025-11-22', amount: 220000 },
+            { date: '2025-11-23', amount: 195000 },
+            { date: '2025-11-24', amount: 250000 }
+        ];
+
+        // ===== 2. 표(Table)에 데이터 채우기 =====
+        const revenueTbody = document.querySelector('#revenueTable tbody');
+
+        revenueData.forEach(row => {
+            const tr = document.createElement('tr');
+
+            const tdDate = document.createElement('td');
+            tdDate.textContent = row.date;
+
+            const tdAmount = document.createElement('td');
+            tdAmount.textContent = row.amount.toLocaleString() + ' 원';
+
+            tr.appendChild(tdDate);
+            tr.appendChild(tdAmount);
+            revenueTbody.appendChild(tr);
+        });
+
+        // ===== 3. Chart.js로 라인 그래프 그리기 =====
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+
+        const revenueLabels = revenueData.map(row => row.date);
+        const revenueAmounts = revenueData.map(row => row.amount);
+
+        new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: revenueLabels,
+                datasets: [{
+                    label: '일일 수익 (원)',
+                    data: revenueAmounts,
+                    backgroundColor: 'rgba(246, 194, 62, 0.1)',
+                    borderColor: 'rgba(246, 194, 62, 1)',
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(246, 194, 62, 1)',
+                    pointBorderColor: 'rgba(246, 194, 62, 1)',
+                    pointHoverRadius: 4,
+                    pointHitRadius: 10,
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function (value) {
+                                return value.toLocaleString() + '원';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return ' ' + context.parsed.y.toLocaleString() + ' 원';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>외국어 문제풀이 - 건의하기</title>
+
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css?family=Nunito:200)
+        rel=" stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+
+    <div id="wrapper">
+
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow">
+                    <a class="navbar-brand" href="user-quiz.html">외국어 문제풀이 (사용자용)</a>
+
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item mx-1">
+                            <a class="nav-link" href="user-quiz.html">문제 풀기</a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="nav-link" href="user-suggest.html">건의하기</a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="nav-link" href="user-account.html">내 정보</a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="nav-link text-danger" href="login.html">로그아웃</a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Page Content -->
+                <div class="container-fluid">
+
+                    <h1 class="h3 mb-4 text-gray-800">사이트 건의하기</h1>
+
+                    <!-- 건의 작성 폼 -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">건의/요청사항 작성</h6>
+                        </div>
+                        <div class="card-body">
+                            <form id="suggestForm">
+                                <div class="form-group">
+                                    <label>제목</label>
+                                    <input type="text" id="suggestTitle" class="form-control" required
+                                        placeholder="예: 일본어 고급 문제를 더 추가해 주세요">
+                                </div>
+                                <div class="form-group">
+                                    <label>내용</label>
+                                    <textarea id="suggestContent" class="form-control" rows="4" required
+                                        placeholder="원하시는 기능, 과목, 난이도 등을 자유롭게 적어주세요."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">건의 보내기</button>
+                                <small class="text-muted d-block mt-2">
+                                    브라우저 localStorage에 저장되며, 관리자 페이지(문의 내역)에서 확인 후 답변이 등록됩니다.
+                                </small>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- 건의 리스트 + 답변 상태 -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">내 건의 목록 (이 브라우저 기준)</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="suggestListEmpty" class="text-muted">
+                                아직 등록된 건의가 없습니다.
+                            </div>
+                            <div id="suggestList" class="list-group">
+                                <!-- JS로 채움 -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; 외국어 문제 풀이 사이트</span>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+
+    </div>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <script>
+        const STORAGE_KEY = 'userSuggests';
+        const STORAGE_KEY_ACTIVITIES = 'adminActivities';
+
+        // 관리자 활동 로그 기록용 (문의 등록 알림)
+        function addAdminActivity(type, message) {
+            const map = {
+                question: {
+                    badge: '문제 관리',
+                    badgeClass: 'badge-primary',
+                    target: 'charts.html'
+                },
+                inquiry: {
+                    badge: '문의',
+                    badgeClass: 'badge-info',
+                    target: 'inquery.html'
+                },
+                ad: {
+                    badge: '광고',
+                    badgeClass: 'badge-warning',
+                    target: 'advertisement.html'
+                },
+                user: {
+                    badge: '사용자',
+                    badgeClass: 'badge-success',
+                    target: 'tables.html'
+                }
+            };
+            const conf = map[type] || map.inquiry;
+            const now = new Date();
+            const timeStr = now.toLocaleString('ko-KR');
+
+            let list = [];
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY_ACTIVITIES);
+                if (raw) list = JSON.parse(raw);
+            } catch (e) { list = []; }
+
+            list.push({
+                time: timeStr,
+                message,
+                badge: conf.badge,
+                badgeClass: conf.badgeClass,
+                target: conf.target
+            });
+
+            localStorage.setItem(STORAGE_KEY_ACTIVITIES, JSON.stringify(list));
+        }
+
+        function loadSuggests() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return [];
+                return JSON.parse(raw);
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveSuggests(list) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+        }
+
+        function getStatusText(status) {
+            if (status === 'processing') return '처리중';
+            if (status === 'done') return '답변 완료';
+            return '답변 대기중';
+        }
+
+        function getStatusBadgeClass(status) {
+            if (status === 'processing') return 'badge-warning';
+            if (status === 'done') return 'badge-success';
+            return 'badge-secondary';
+        }
+
+        function renderSuggests() {
+            const suggests = loadSuggests();
+            const listDiv = document.getElementById('suggestList');
+            const emptyDiv = document.getElementById('suggestListEmpty');
+
+            listDiv.innerHTML = '';
+            if (suggests.length === 0) {
+                emptyDiv.style.display = 'block';
+                return;
+            }
+            emptyDiv.style.display = 'none';
+
+            suggests.slice().reverse().forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'list-group-item';
+
+                const statusText = getStatusText(item.status || 'pending');
+                const badgeClass = getStatusBadgeClass(item.status || 'pending');
+
+                const answerHtml = item.answer
+                    ? `<div class="mt-2 p-2 border rounded bg-light">
+                    <small class="text-muted d-block mb-1">관리자 답변 (${item.answerAt || '시간 정보 없음'})</small>
+                    <div style="white-space: pre-line;">${item.answer}</div>
+               </div>`
+                    : `<small class="text-muted d-block mt-1">아직 등록된 답변이 없습니다.</small>`;
+
+                div.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="mb-1 font-weight-bold">${item.title}</h6>
+                <span class="badge ${badgeClass}">${statusText}</span>
+            </div>
+            <small class="text-muted d-block mb-1">${item.createdAt}</small>
+            <p class="mb-1" style="white-space: pre-line;">${item.content}</p>
+            ${answerHtml}
+        `;
+
+                listDiv.appendChild(div);
+            });
+        }
+
+        document.getElementById('suggestForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const titleInput = document.getElementById('suggestTitle');
+            const contentInput = document.getElementById('suggestContent');
+
+            const title = titleInput.value.trim();
+            const content = contentInput.value.trim();
+            if (!title || !content) return;
+
+            const now = new Date();
+            const ts = now.getTime();
+            const createdAt = now.toLocaleString('ko-KR');
+
+            const list = loadSuggests();
+            list.push({
+                id: ts,                   // 고유 ID (문의-관리자 매핑용)
+                title,
+                content,
+                createdAt,
+                createdTs: ts,
+                status: 'pending',        // 답변 대기중
+                answer: '',               // 관리자 답변
+                answerAt: '',             // 답변 시각
+                source: 'user'
+            });
+            saveSuggests(list);
+
+            // 관리자 Activity Log에도 기록 (알림용)
+            addAdminActivity('inquiry', `사용자 건의 등록: ${title}`);
+
+            renderSuggests();
+            document.getElementById('suggestForm').reset();
+            alert('건의사항이 등록되었습니다. (관리자 검토 후 답변이 표시됩니다)');
+        });
+
+        // 초기 렌더
+        renderSuggests();
+    </script>
+
+</body>
+
+</html>

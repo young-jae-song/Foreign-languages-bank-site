@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>관리자 페이지 - 문의 내역</title>
+
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <!-- 폰트 링크는 약간 잘못되어 있어서 그냥 제거하거나 필요하면 수정해서 사용 -->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <div class="sidebar-brand-text mx-3">관리자 페이지</div>
+        </a>
+
+        <hr class="sidebar-divider my-0">
+        <li class="nav-item">
+            <a class="nav-link" href="index.html">
+                <span>대쉬보드</span>
+            </a>
+        </li>
+
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">매출</div>
+        <li class="nav-item"><a class="nav-link" href="inquery-daily.html"><span>일일 유저 접속 수</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="inquery-join.html"><span>가입자 수</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="inquery-revenue.html"><span>수익 그래프</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="inquery-subject.html"><span>외국어 과목 분포</span></a></li>
+
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">사용자</div>
+        <li class="nav-item"><a class="nav-link" href="tables.html"><span>개인정보 확인/수정/삭제</span></a></li>
+
+        <hr class="sidebar-divider d-none d-md-block">
+        <div class="sidebar-heading">유저 관리</div>
+        <li class="nav-item"><a class="nav-link" href="charts.html"><span>외국어 문제 추가/수정/삭제</span></a></li>
+
+        <hr class="sidebar-divider d-none d-md-block">
+        <div class="sidebar-heading">문의 관리</div>
+        <li class="nav-item active"><a class="nav-link" href="inquery.html"><span>문의 내역</span></a></li>
+
+        <hr class="sidebar-divider d-none d-md-block">
+        <div class="sidebar-heading">광고 관리</div>
+        <li class="nav-item"><a class="nav-link" href="advertisement.html"><span>광고 관리</span></a></li>
+
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
+    </ul>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow">
+                <span class="navbar-brand mb-0 h5">문의 내역</span>
+            </nav>
+
+            <div class="container-fluid">
+
+                <h1 class="h3 mb-4 text-gray-800">문의 내역 관리</h1>
+
+                <!-- 필터/검색 -->
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <form class="form-inline">
+                            <label class="mr-2 mb-2">처리 상태</label>
+                            <select id="statusFilter" class="form-control mr-3 mb-2">
+                                <option value="all">전체</option>
+                                <option value="pending">미처리</option>
+                                <option value="processing">처리중</option>
+                                <option value="done">완료</option>
+                            </select>
+
+                            <label class="mr-2 mb-2">검색</label>
+                            <input type="text" id="searchInput" class="form-control mb-2"
+                                   placeholder="제목 / 내용 / 사용자명">
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 문의 리스트 -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">문의 목록 (사용자 건의 포함)</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0" id="inqueryTable">
+                                <thead>
+                                <tr>
+                                    <th>번호</th>
+                                    <th>사용자명/출처</th>
+                                    <th>제목</th>
+                                    <th>등록일</th>
+                                    <th>처리 상태</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- JS로 채우기 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 상세 + 상태 변경 + 답변 작성 + 삭제 -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">문의 상세 / 답변</h6>
+                    </div>
+                    <div class="card-body" id="inqueryDetail">
+                        <p class="text-muted mb-0">
+                            좌측 문의 목록에서 항목을 클릭하면 상세 내용이 여기에 표시되고,<br>
+                            상태 변경·답변 작성·삭제가 가능합니다.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; 외국어 문제 풀이 사이트 관리자</span>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+</div>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+
+<script>
+const STORAGE_KEY_SUGGESTS    = 'userSuggests';     // 사용자 건의/문의
+const STORAGE_KEY_ACTIVITIES  = 'adminActivities';  // 관리자 활동 로그
+const STORAGE_KEY_INQUERIES   = 'adminInqueries';   // 관리자용 시스템 문의 저장용
+
+// 1) 기본 관리자 문의 더미 데이터 (최초 1회용)
+const baseInqueries = [
+    {
+        id: 5,
+        username: 'mathlover01',
+        title: '프리미엄 결제가 안 됩니다.',
+        content: '카드 정보를 입력했는데 결제 완료 화면이 안 뜨고 계속 로딩만 됩니다.',
+        createdAt: '2025-11-24 14:32',
+        createdTs: 1732435920000,
+        status: 'pending',
+        source: 'system',
+        answer: '',
+        answerAt: ''
+    },
+    {
+        id: 4,
+        username: 'eng_student',
+        title: '영어 모의고사 해설이 잘못된 것 같아요.',
+        content: '11번 문제 보기 해설이 실제 정답과 다른 것 같습니다. 확인 부탁드립니다.',
+        createdAt: '2025-11-23 20:15',
+        createdTs: 1732376100000,
+        status: 'processing',
+        source: 'system',
+        answer: '',
+        answerAt: ''
+    },
+    {
+        id: 3,
+        username: 'guest123',
+        title: '비밀번호를 잊어버렸습니다.',
+        content: '가입한 이메일을 모르겠는데, 휴대폰 번호로 찾을 수는 없나요?',
+        createdAt: '2025-11-23 09:02',
+        createdTs: 1732342920000,
+        status: 'done',
+        source: 'system',
+        answer: '고객센터를 통해 본인 확인 후 비밀번호 재설정이 가능합니다.',
+        answerAt: '2025-11-23 10:10'
+    },
+    {
+        id: 2,
+        username: 'science_master',
+        title: '일본어 고난도 문제은행 추가 요청',
+        content: '일본어 고난도 문제를 한 곳에서 모아서 풀 수 있는 문제은행을 만들어주시면 좋겠습니다.',
+        createdAt: '2025-11-22 18:47',
+        createdTs: 1732288020000,
+        status: 'done',
+        source: 'system',
+        answer: '차기 업데이트에 과학 고난도 문제은행을 순차적으로 추가할 예정입니다.',
+        answerAt: '2025-11-23 09:00'
+    },
+    {
+        id: 1,
+        username: 'newbie',
+        title: '회원탈퇴는 어디에서 하나요?',
+        content: '회원탈퇴 메뉴 위치를 못 찾겠어요. 경로 안내 부탁드립니다.',
+        createdAt: '2025-11-21 11:20',
+        createdTs: 1732155600000,
+        status: 'processing',
+        source: 'system',
+        answer: '',
+        answerAt: ''
+    }
+];
+
+// ----- adminInqueries(localStorage) 제어 -----
+function loadSystemInqueriesFromStorage() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY_INQUERIES);
+        if (!raw) return null;
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? arr : null;
+    } catch (e) {
+        return null;
+    }
+}
+function saveSystemInqueriesToStorage(list) {
+    localStorage.setItem(STORAGE_KEY_INQUERIES, JSON.stringify(list));
+}
+
+// 최초 1회: localStorage에 없으면 baseInqueries로 채워 넣고, 있으면 그걸 사용
+let systemInqueries = loadSystemInqueriesFromStorage();
+if (!systemInqueries) {
+    systemInqueries = baseInqueries.slice();  // 복사
+    saveSystemInqueriesToStorage(systemInqueries);
+}
+
+// ----- 사용자 건의(userSuggests) 읽기/쓰기 -----
+function loadUserSuggestsRaw() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY_SUGGESTS);
+        if (!raw) return [];
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? arr : [];
+    } catch (e) {
+        return [];
+    }
+}
+function saveUserSuggestsRaw(list) {
+    localStorage.setItem(STORAGE_KEY_SUGGESTS, JSON.stringify(list));
+}
+
+// 사용자 건의를 관리자용 문의 형태로 변환
+function loadUserSuggestsForAdmin() {
+    const arr = loadUserSuggestsRaw();
+    return arr.map(s => ({
+        id: s.id,
+        username: '사용자 건의',
+        title: s.title,
+        content: s.content,
+        createdAt: s.createdAt,
+        createdTs: s.createdTs || s.id || 0,
+        status: s.status || 'pending',
+        source: 'user',
+        answer: s.answer || '',
+        answerAt: s.answerAt || ''
+    }));
+}
+
+// 통합 문의 배열 = 시스템 문의 + 사용자 건의
+function getAllInqueries() {
+    const userQ = loadUserSuggestsForAdmin();
+    return [...systemInqueries, ...userQ];
+}
+
+// 상태 뱃지
+function renderStatusBadge(status) {
+    if (status === 'pending')   return '<span class="badge badge-danger">미처리</span>';
+    if (status === 'processing')return '<span class="badge badge-warning">처리중</span>';
+    return '<span class="badge badge-success">완료</span>';
+}
+
+const tbody      = document.querySelector('#inqueryTable tbody');
+const statusFilter = document.getElementById('statusFilter');
+const searchInput  = document.getElementById('searchInput');
+const detailDiv    = document.getElementById('inqueryDetail');
+
+function renderTable() {
+    const filterStatus = statusFilter.value;
+    const searchText   = searchInput.value.trim().toLowerCase();
+    const list = getAllInqueries();
+
+    tbody.innerHTML = '';
+
+    list
+        .filter(q => {
+            if (filterStatus === 'all') return true;
+            return q.status === filterStatus;
+        })
+        .filter(q => {
+            if (!searchText) return true;
+            return (
+                q.title.toLowerCase().includes(searchText) ||
+                q.content.toLowerCase().includes(searchText) ||
+                q.username.toLowerCase().includes(searchText)
+            );
+        })
+        .sort((a, b) => (b.createdTs || 0) - (a.createdTs || 0))
+        .forEach(q => {
+            const tr = document.createElement('tr');
+            tr.dataset.id = q.id;
+            tr.dataset.source = q.source;
+            tr.innerHTML = `
+                <td>${q.id}</td>
+                <td>${q.source === 'user' ? '사용자 건의' : q.username}</td>
+                <td>${q.title}</td>
+                <td>${q.createdAt}</td>
+                <td>${renderStatusBadge(q.status)}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+    if (tbody.children.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="5" class="text-center text-muted">조건에 맞는 문의가 없습니다.</td>`;
+        tbody.appendChild(tr);
+    }
+}
+
+// 초기 테이블 렌더링
+renderTable();
+statusFilter.addEventListener('change', renderTable);
+searchInput.addEventListener('input', renderTable);
+
+// 관리자 Activity Log 기록 (문의 처리/삭제용)
+function addAdminActivity(message) {
+    let list = [];
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY_ACTIVITIES);
+        if (raw) list = JSON.parse(raw);
+    } catch (e) { list = []; }
+
+    const now = new Date();
+    const timeStr = now.toLocaleString('ko-KR');
+
+    list.push({
+        time: timeStr,
+        message,
+        badge: '문의',
+        badgeClass: 'badge-info',
+        target: 'inquery.html'
+    });
+
+    localStorage.setItem(STORAGE_KEY_ACTIVITIES, JSON.stringify(list));
+}
+
+// 행 클릭 → 상세 + 상태/답변 편집 + 삭제 버튼
+tbody.addEventListener('click', (event) => {
+    const tr = event.target.closest('tr');
+    if (!tr || !tr.dataset.id) return;
+    const id = Number(tr.dataset.id);
+    const source = tr.dataset.source;
+    const q = getAllInqueries().find(x => x.id === id && x.source === source);
+    if (!q) return;
+
+    const status = q.status || 'pending';
+    const answer = q.answer || '';
+    const answerAt = q.answerAt || '';
+
+    detailDiv.innerHTML = `
+        <form id="inqueryDetailForm">
+            <input type="hidden" id="detailId" value="${q.id}">
+            <input type="hidden" id="detailSource" value="${q.source}">
+            <h5 class="font-weight-bold mb-3">${q.title}</h5>
+
+            <p class="mb-1"><strong>문의 번호:</strong> ${q.id}</p>
+            <p class="mb-1"><strong>사용자명/출처:</strong> ${q.source === 'user' ? '사용자 건의' : q.username}</p>
+            <p class="mb-1"><strong>등록일:</strong> ${q.createdAt}</p>
+
+            <div class="form-group mt-3">
+                <label><strong>처리 상태</strong></label>
+                <select id="detailStatus" class="form-control form-control-sm" style="max-width:200px;">
+                    <option value="pending"   ${status === 'pending' ? 'selected' : ''}>미처리</option>
+                    <option value="processing"${status === 'processing' ? 'selected' : ''}>처리중</option>
+                    <option value="done"      ${status === 'done' ? 'selected' : ''}>완료</option>
+                </select>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label><strong>문의 내용</strong></label>
+                <p class="border rounded p-2" style="white-space: pre-line;">${q.content}</p>
+            </div>
+
+            <div class="form-group">
+                <label><strong>관리자 답변</strong></label>
+                <textarea id="detailAnswer" class="form-control" rows="4"
+                          placeholder="사용자에게 전달할 답변 내용을 입력하세요. 완료 상태일 때 사용자 화면에 표시됩니다.">${answer}</textarea>
+                <small class="text-muted d-block mt-1">
+                    ${answerAt ? '마지막 답변 시각: ' + answerAt : '아직 등록된 답변이 없습니다.'}
+                </small>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="button" id="btnDeleteInquery" class="btn btn-outline-danger btn-sm">
+                    삭제
+                </button>
+                <button type="submit" class="btn btn-primary btn-sm">
+                    저장
+                </button>
+            </div>
+        </form>
+    `;
+
+    const form = document.getElementById('inqueryDetailForm');
+    form.addEventListener('submit', handleDetailSave);
+
+    const btnDelete = document.getElementById('btnDeleteInquery');
+    btnDelete.addEventListener('click', handleDeleteInquery);
+});
+
+// 저장(상태/답변)
+function handleDetailSave(e) {
+    e.preventDefault();
+    const id = Number(document.getElementById('detailId').value);
+    const source = document.getElementById('detailSource').value;
+    const newStatus = document.getElementById('detailStatus').value;
+    const newAnswer = document.getElementById('detailAnswer').value.trim();
+
+    // 1) 시스템 문의
+    if (source === 'system') {
+        const item = systemInqueries.find(x => x.id === id);
+        if (item) {
+            item.status = newStatus;
+            item.answer = newAnswer;
+            if (newStatus === 'done' && newAnswer) {
+                const now = new Date();
+                item.answerAt = now.toLocaleString('ko-KR');
+                addAdminActivity(`시스템 문의 처리 완료: ${item.title}`);
+            }
+            saveSystemInqueriesToStorage(systemInqueries);
+        }
+        alert('시스템 문의 상태/답변이 저장되었습니다.');
+        renderTable();
+        return;
+    }
+
+    // 2) 사용자 건의
+    const list = loadUserSuggestsRaw();
+    const target = list.find(x => x.id === id);
+    if (!target) {
+        alert('해당 사용자 건의를 찾을 수 없습니다.');
+        return;
+    }
+
+    target.status = newStatus;
+    target.answer = newAnswer;
+    if (newStatus === 'done' && newAnswer) {
+        const now = new Date();
+        target.answerAt = now.toLocaleString('ko-KR');
+        addAdminActivity(`사용자 건의 처리 완료: ${target.title}`);
+    }
+
+    saveUserSuggestsRaw(list);
+    alert('사용자 건의 상태/답변이 저장되었습니다.\n사용자 화면(건의하기 페이지)에서 답변을 확인할 수 있습니다.');
+    renderTable();
+}
+
+// 삭제
+function handleDeleteInquery() {
+    const id = Number(document.getElementById('detailId').value);
+    const source = document.getElementById('detailSource').value;
+
+    if (!confirm('정말 이 문의를 삭제하시겠습니까?\n삭제 후에는 되돌릴 수 없습니다.')) {
+        return;
+    }
+
+    if (source === 'system') {
+        const idx = systemInqueries.findIndex(x => x.id === id);
+        if (idx >= 0) {
+            const title = systemInqueries[idx].title;
+            systemInqueries.splice(idx, 1);
+            saveSystemInqueriesToStorage(systemInqueries);
+            addAdminActivity(`시스템 문의 삭제: ${title}`);
+        }
+    } else {
+        const list = loadUserSuggestsRaw();
+        const idx = list.findIndex(x => x.id === id);
+        if (idx >= 0) {
+            const title = list[idx].title;
+            list.splice(idx, 1);
+            saveUserSuggestsRaw(list);
+            addAdminActivity(`사용자 건의 삭제: ${title}`);
+        }
+    }
+
+    alert('문의가 삭제되었습니다.');
+    detailDiv.innerHTML = `
+        <p class="text-muted mb-0">
+            좌측 문의 목록에서 항목을 클릭하면 상세 내용이 여기에 표시되고,<br>
+            상태 변경·답변 작성·삭제가 가능합니다.
+        </p>
+    `;
+    renderTable();
+}
+</script>
+
+</body>
+</html>

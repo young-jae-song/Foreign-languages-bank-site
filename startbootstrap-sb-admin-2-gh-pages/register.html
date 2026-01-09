@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>회원가입 - 외국어 문제풀이 사이트</title>
+
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-primary">
+
+<div class="container">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-4">
+            <div class="text-center mb-4">
+                <h1 class="h4 text-gray-900 mb-2">회원가입</h1>
+                <p class="mb-0">아이디, 이메일, 비밀번호를 입력해주세요.</p>
+            </div>
+
+            <form id="registerForm">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="regId">아이디</label>
+                        <input type="text" class="form-control" id="regId" required placeholder="user01">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="regPw">비밀번호</label>
+                        <input type="password" class="form-control" id="regPw" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="regName">이름</label>
+                        <input type="text" class="form-control" id="regName" placeholder="홍길동">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="regEmail">이메일</label>
+                        <input type="email" class="form-control" id="regEmail" required placeholder="you@example.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="regPhone">전화번호</label>
+                    <input type="text" class="form-control" id="regPhone" placeholder="010-0000-0000">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    가입하기
+                </button>
+
+                <div class="text-center mt-3">
+                    <a class="small" href="login.html">이미 계정이 있나요? 로그인</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+
+<script>
+const STORAGE_KEY_USERS = 'users';
+const STORAGE_KEY_ADMIN_USERLIST = 'adminUserList';
+
+function loadArray(key) {
+    try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return [];
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? arr : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveArray(key, arr) {
+    localStorage.setItem(key, JSON.stringify(arr));
+}
+
+function syncUserToAdminList(user) {
+    let list = loadArray(STORAGE_KEY_ADMIN_USERLIST);
+
+    const createdAtText = user.createdAt
+        ? new Date(user.createdAt).toLocaleString('ko-KR')
+        : '알 수 없음';
+
+    const adminUserObj = {
+        id: user.id,
+        name: user.name || user.id,
+        email: user.email || '',
+        phone: user.phone || '',
+        status: user.status || 'active',
+        role: user.role || 'user',
+        memo: user.memo || '',
+        source: user.source || '가입폼',
+        createdAt: createdAtText,
+        sortKey: Date.now()
+    };
+
+    const idx = list.findIndex(u => u.id === user.id);
+    if (idx >= 0) list[idx] = adminUserObj;
+    else list.push(adminUserObj);
+
+    saveArray(STORAGE_KEY_ADMIN_USERLIST, list);
+}
+
+document.getElementById('registerForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const id    = document.getElementById('regId').value.trim();
+    const pw    = document.getElementById('regPw').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const name  = document.getElementById('regName').value.trim();
+    const phone = document.getElementById('regPhone').value.trim();
+
+    if (!id || !pw || !email) {
+        alert('아이디, 비밀번호, 이메일은 필수입니다.');
+        return;
+    }
+
+    let users = loadArray(STORAGE_KEY_USERS);
+
+    // 아이디 중복
+    if (users.find(u => u.id === id)) {
+        alert('이미 존재하는 아이디입니다.');
+        return;
+    }
+
+    // 이메일 밴 체크 (강제 탈퇴/withdrawn)
+    const blocked = users.find(u => u.email === email && (u.banned || u.status === 'withdrawn'));
+    if (blocked) {
+        alert('해당 이메일은 사용이 제한된 상태입니다.\n다른 이메일로 가입해주세요.');
+        return;
+    }
+
+    const now = new Date();
+
+    const newUser = {
+        id,
+        pw,
+        email,
+        name,
+        phone,
+        createdAt: now.toISOString(),
+        status: 'active',
+        role: 'user',
+        source: '가입폼',
+        memo: '',
+        banned: false,
+        suspendedUntil: null
+    };
+
+    users.push(newUser);
+    saveArray(STORAGE_KEY_USERS, users);
+    syncUserToAdminList(newUser);
+
+    alert('회원가입이 완료되었습니다.');
+    location.href = 'login.html';
+});
+</script>
+
+</body>
+</html>

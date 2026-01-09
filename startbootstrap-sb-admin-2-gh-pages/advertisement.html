@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>관리자 페이지 - 광고 관리</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css?family=Nunito:200)
+        rel=" stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-text mx-3">관리자 페이지</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">
+                    <span>대쉬보드</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                매출
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="inquery-daily.html">
+                    <span>일일 유저 접속 수</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="inquery-join.html">
+                    <span>가입자 수</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="inquery-revenue.html">
+                    <span>수익 그래프</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="inquery-subject.html">
+                    <span>과목 분포</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                사용자
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="tables.html">
+                    <span>개인정보 확인/수정/삭제</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                유저 관리
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="charts.html">
+                    <span>문제 추가/수정/삭제</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                문의 관리
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="inquery.html">
+                    <span>문의 내역</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                광고 관리
+            </div>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="advertisement.html">
+                    <span>광고 관리</span>
+                </a>
+            </li>
+
+            <!-- Sidebar Toggler -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow">
+                    <span class="navbar-brand mb-0 h5">광고 관리</span>
+                </nav>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <h1 class="h3 mb-4 text-gray-800">광고 배너 / 링크 관리</h1>
+
+                    <div class="row">
+
+                        <!-- 광고 등록/수정 폼 -->
+                        <div class="col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                                    <h6 class="m-0 font-weight-bold text-primary" id="adFormTitle">신규 광고 등록</h6>
+                                    <button type="button" class="btn btn-sm btn-secondary" id="adResetBtn">새 광고
+                                        작성</button>
+                                </div>
+                                <div class="card-body">
+                                    <form id="adForm">
+                                        <input type="hidden" id="adId">
+
+                                        <div class="form-group">
+                                            <label>광고 이름</label>
+                                            <input type="text" id="adName" class="form-control" required
+                                                placeholder="예: 메인 상단 배너 - 11월 프로모션">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>광고 위치</label>
+                                            <select id="adPosition" class="form-control" required>
+                                                <option value="">선택해주세요</option>
+                                                <option value="메인 상단 배너">메인 상단 배너</option>
+                                                <option value="문제 풀이 페이지 오른쪽">문제 풀이 페이지 오른쪽</option>
+                                                <option value="로그인 페이지 하단">로그인 페이지 하단</option>
+                                                <option value="기타">기타</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>링크 URL</label>
+                                            <input type="url" id="adUrl" class="form-control" placeholder="예: [example.com](https://example.com/event&quot;)>
+                                    </div>
+
+                                    <div class=" form-group">
+                                            <label>이미지 URL (또는 배너 텍스트)</label>
+                                            <textarea id="adImage" class="form-control" rows="2"
+                                                placeholder="이미지 주소 또는 간단한 문구를 입력하세요"></textarea>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>시작일</label>
+                                                <input type="date" id="adStartDate" class="form-control">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>종료일</label>
+                                                <input type="date" id="adEndDate" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>상태</label>
+                                            <select id="adStatus" class="form-control" required>
+                                                <option value="active">노출중</option>
+                                                <option value="paused">일시중지</option>
+                                                <option value="ended">종료</option>
+                                            </select>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">저장</button>
+                                        <button type="button" class="btn btn-danger d-none" id="adDeleteBtn">삭제</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 광고 목록 + 간단 미리보기 -->
+                        <div class="col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                                    <h6 class="m-0 font-weight-bold text-primary">광고 목록</h6>
+                                    <div>
+                                        <select id="adStatusFilter" class="form-control form-control-sm">
+                                            <option value="all">전체</option>
+                                            <option value="active">노출중</option>
+                                            <option value="paused">일시중지</option>
+                                            <option value="ended">종료</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered mb-0" id="adTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>번호</th>
+                                                    <th>이름</th>
+                                                    <th>위치</th>
+                                                    <th>상태</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- JS로 채움 -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <small class="text-muted d-block mt-2">
+                                        테이블 행을 클릭하면 위 폼에서 수정/삭제할 수 있습니다.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- 간단 미리보기 -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">선택된 광고 미리보기</h6>
+                                </div>
+                                <div class="card-body" id="adPreview">
+                                    <p class="text-muted mb-0">광고 목록에서 항목을 클릭하면 미리보기가 표시됩니다.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; 외국어 문제 풀이 사이트 관리자</span>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- 페이지 전용 스크립트 -->
+    <script>
+        // ===== 공통: 관리자 Activity Log 기록 함수 =====
+        const STORAGE_KEY_ACTIVITIES = 'adminActivities';
+
+        function addAdminActivity(type, message) {
+            const map = {
+                question: {
+                    badge: '문제 관리',
+                    badgeClass: 'badge-primary',
+                    target: 'charts.html'
+                },
+                inquiry: {
+                    badge: '문의',
+                    badgeClass: 'badge-info',
+                    target: 'inquery.html'
+                },
+                ad: {
+                    badge: '광고',
+                    badgeClass: 'badge-warning',
+                    target: 'advertisement.html'
+                },
+                user: {
+                    badge: '사용자',
+                    badgeClass: 'badge-success',
+                    target: 'tables.html'
+                }
+            };
+            const conf = map[type] || map.ad;
+            const now = new Date();
+            const timeStr = now.toLocaleString('ko-KR');
+
+            let list = [];
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY_ACTIVITIES);
+                if (raw) list = JSON.parse(raw);
+            } catch (e) {
+                list = [];
+            }
+
+            list.push({
+                time: timeStr,
+                message,
+                badge: conf.badge,
+                badgeClass: conf.badgeClass,
+                target: conf.target
+            });
+
+            localStorage.setItem(STORAGE_KEY_ACTIVITIES, JSON.stringify(list));
+        }
+
+        // ===== 1. 광고 데이터 (localStorage 사용) =====
+        const STORAGE_KEY_ADS = 'ads';
+
+        function loadAds() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY_ADS);
+                if (!raw) return getDefaultAds();
+                return JSON.parse(raw);
+            } catch (e) {
+                return getDefaultAds();
+            }
+        }
+
+        function saveAds(list) {
+            localStorage.setItem(STORAGE_KEY_ADS, JSON.stringify(list));
+        }
+
+        function getDefaultAds() {
+            // 최초 진입용 데모 광고 3개
+            return [
+                {
+                    id: 3,
+                    name: '메인 상단 배너 - 외국어 패키지 50% 할인',
+                    position: '메인 상단 배너',
+                    url: 'https://example.com/event/foreign-package',
+                    image: '외국어 올인원 패키지 50% 할인 이벤트 진행 중!',
+                    startDate: '2025-11-20',
+                    endDate: '2025-12-31',
+                    status: 'active'
+                },
+                {
+                    id: 2,
+                    name: '문제 풀이 페이지 - 교재 광고',
+                    position: '문제 풀이 페이지 오른쪽',
+                    url: 'https://example.com/book',
+                    image: '영어/일본어/중국어 기출 해설집 광고 배너',
+                    startDate: '2025-11-01',
+                    endDate: '2025-11-30',
+                    status: 'paused'
+                },
+                {
+                    id: 1,
+                    name: '로그인 페이지 하단 - 어학원 배너',
+                    position: '로그인 페이지 하단',
+                    url: 'https://example.com/academy',
+                    image: '어학원 수강생 모집 배너',
+                    startDate: '2025-10-01',
+                    endDate: '2025-10-31',
+                    status: 'ended'
+                }
+            ];
+        }
+
+
+
+        let ads = loadAds();
+
+        function getNextAdId() {
+            if (ads.length === 0) return 1;
+            return Math.max(...ads.map(a => a.id)) + 1;
+        }
+
+        // ===== 2. 상태 뱃지 =====
+        function renderStatusBadge(status) {
+            if (status === 'active') {
+                return '<span class="badge badge-success">노출중</span>';
+            } else if (status === 'paused') {
+                return '<span class="badge badge-warning">일시중지</span>';
+            } else {
+                return '<span class="badge badge-secondary">종료</span>';
+            }
+        }
+
+        // ===== 3. 테이블 렌더링 =====
+        const adTableBody = document.querySelector('#adTable tbody');
+        const adStatusFilter = document.getElementById('adStatusFilter');
+
+        function renderAdTable() {
+            const filter = adStatusFilter.value;
+            adTableBody.innerHTML = '';
+
+            ads
+                .filter(ad => {
+                    if (filter === 'all') return true;
+                    return ad.status === filter;
+                })
+                .sort((a, b) => b.id - a.id)
+                .forEach(ad => {
+                    const tr = document.createElement('tr');
+                    tr.dataset.id = ad.id;
+                    tr.innerHTML = `
+                    <td>${ad.id}</td>
+                    <td>${ad.name}</td>
+                    <td>${ad.position}</td>
+                    <td>${renderStatusBadge(ad.status)}</td>
+                `;
+                    adTableBody.appendChild(tr);
+                });
+
+            if (adTableBody.children.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                <td colspan="4" class="text-center text-muted">
+                    조건에 맞는 광고가 없습니다.
+                </td>
+            `;
+                adTableBody.appendChild(tr);
+            }
+        }
+
+        renderAdTable();
+
+        adStatusFilter.addEventListener('change', renderAdTable);
+
+        // ===== 4. 폼 제어 =====
+        const adFormTitle = document.getElementById('adFormTitle');
+        const adForm = document.getElementById('adForm');
+        const adResetBtn = document.getElementById('adResetBtn');
+        const adDeleteBtn = document.getElementById('adDeleteBtn');
+
+        const adIdInput = document.getElementById('adId');
+        const adNameInput = document.getElementById('adName');
+        const adPositionInput = document.getElementById('adPosition');
+        const adUrlInput = document.getElementById('adUrl');
+        const adImageInput = document.getElementById('adImage');
+        const adStartDateInput = document.getElementById('adStartDate');
+        const adEndDateInput = document.getElementById('adEndDate');
+        const adStatusInput = document.getElementById('adStatus');
+
+        const adPreviewDiv = document.getElementById('adPreview');
+
+        function resetAdForm() {
+            adForm.reset();
+            adIdInput.value = '';
+            adFormTitle.textContent = '신규 광고 등록';
+            adDeleteBtn.classList.add('d-none');
+            adPreviewDiv.innerHTML = '<p class="text-muted mb-0">광고 목록에서 항목을 클릭하면 미리보기가 표시됩니다.</p>';
+        }
+
+        adResetBtn.addEventListener('click', resetAdForm);
+
+        // ===== 5. 광고 클릭 시 폼/미리보기 채우기 =====
+        adTableBody.addEventListener('click', (event) => {
+            const tr = event.target.closest('tr');
+            if (!tr || !tr.dataset.id) return;
+
+            const id = Number(tr.dataset.id);
+            const ad = ads.find(a => a.id === id);
+            if (!ad) return;
+
+            adIdInput.value = ad.id;
+            adNameInput.value = ad.name;
+            adPositionInput.value = ad.position;
+            adUrlInput.value = ad.url || '';
+            adImageInput.value = ad.image || '';
+            adStartDateInput.value = ad.startDate || '';
+            adEndDateInput.value = ad.endDate || '';
+            adStatusInput.value = ad.status;
+
+            adFormTitle.textContent = `광고 수정 (번호: ${ad.id})`;
+            adDeleteBtn.classList.remove('d-none');
+
+            renderAdPreview(ad);
+        });
+
+        function renderAdPreview(ad) {
+            const urlHtml = ad.url
+                ? `<p class="mb-1"><strong>링크:</strong> <a href="${ad.url}" target="_blank">${ad.url}</a></p>`
+                : '<p class="mb-1"><strong>링크:</strong> (없음)</p>';
+
+            const imageHtml = ad.image
+                ? `<div class="border rounded p-2 mt-2" style="min-height:60px;">
+                    <small class="text-muted d-block mb-1">이미지/배너 텍스트</small>
+                    <div style="white-space: pre-line;">${ad.image}</div>
+               </div>`
+                : '<p class="text-muted mt-2 mb-0">이미지/배너 텍스트가 등록되지 않았습니다.</p>';
+
+            adPreviewDiv.innerHTML = `
+            <h5 class="font-weight-bold mb-2">${ad.name}</h5>
+            <p class="mb-1"><strong>위치:</strong> ${ad.position}</p>
+            <p class="mb-1"><strong>기간:</strong> ${ad.startDate || '-'} ~ ${ad.endDate || '-'}</p>
+            <p class="mb-1"><strong>상태:</strong> ${renderStatusBadge(ad.status)}</p>
+            ${urlHtml}
+            ${imageHtml}
+        `;
+        }
+
+        // ===== 6. 저장(등록/수정) =====
+        adForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const name = adNameInput.value.trim();
+            const position = adPositionInput.value;
+            const url = adUrlInput.value.trim();
+            const image = adImageInput.value.trim();
+            const startDate = adStartDateInput.value;
+            const endDate = adEndDateInput.value;
+            const status = adStatusInput.value;
+
+            if (!name || !position || !status) {
+                alert('광고 이름, 위치, 상태는 필수 입력입니다.');
+                return;
+            }
+
+            const idVal = adIdInput.value;
+
+            if (idVal) {
+                // 수정
+                const id = Number(idVal);
+                const index = ads.findIndex(a => a.id === id);
+                if (index !== -1) {
+                    ads[index] = {
+                        ...ads[index],
+                        name,
+                        position,
+                        url,
+                        image,
+                        startDate,
+                        endDate,
+                        status
+                    };
+                    saveAds(ads);
+                    addAdminActivity('ad', `광고 수정 (ID: ${id}, 위치: ${position})`);
+                    alert('광고가 수정되었습니다.');
+                }
+            } else {
+                // 새로 추가
+                const newAd = {
+                    id: getNextAdId(),
+                    name,
+                    position,
+                    url,
+                    image,
+                    startDate,
+                    endDate,
+                    status
+                };
+                ads.push(newAd);
+                saveAds(ads);
+                addAdminActivity('ad', `새 광고 등록 (ID: ${newAd.id}, 위치: ${position})`);
+                alert('새 광고가 등록되었습니다.');
+            }
+
+            renderAdTable();
+            resetAdForm();
+        });
+
+        // ===== 7. 삭제 =====
+        adDeleteBtn.addEventListener('click', () => {
+            const idVal = adIdInput.value;
+            if (!idVal) return;
+
+            if (!confirm('정말 이 광고를 삭제하시겠습니까?')) return;
+
+            const id = Number(idVal);
+            const target = ads.find(a => a.id === id);
+            const pos = target ? target.position : '';
+
+            ads = ads.filter(a => a.id !== id);
+            saveAds(ads);
+
+            addAdminActivity('ad', `광고 삭제 (ID: ${id}, 위치: ${pos})`);
+
+            alert('광고가 삭제되었습니다.');
+            renderAdTable();
+            resetAdForm();
+        });
+    </script>
+
+</body>
+
+</html>
