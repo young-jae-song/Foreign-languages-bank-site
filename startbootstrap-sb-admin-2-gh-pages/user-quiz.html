@@ -152,6 +152,8 @@
 <script src="js/sb-admin-2.min.js"></script>
 
 <script>
+
+
 const STORAGE_KEY_QUESTIONS = 'questions';
 const STORAGE_KEY_CURRENT_USER = 'currentUserId';
 const STORAGE_KEY_USER_RESULTS = 'userQuizResults';
@@ -186,6 +188,32 @@ function shuffleArray(arr) {
     return a;
 }
 
+function loadQuestionsFromStorage() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY_QUESTIONS);
+        if (!raw) return null;
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? arr : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+function saveQuestionsToStorage(list) {
+    localStorage.setItem(STORAGE_KEY_QUESTIONS, JSON.stringify(list));
+}
+
+/* 🔥 핵심 초기화 */
+function initQuestionsIfEmpty() {
+    let questions = loadQuestionsFromStorage();
+    if (!questions) {
+        // 관리자 페이지와 동일한 기본 문제 생성
+        questions = generateDefaultQuestions(); // 또는 기본 문제 배열
+        saveQuestionsToStorage(questions);
+    }
+    return questions;
+}
+
 // 초기 문제 로드
 (function initQuestions() {
     const stored = loadArray(STORAGE_KEY_QUESTIONS);
@@ -198,6 +226,12 @@ document.getElementById('logoutLink').addEventListener('click', function (e) {
     localStorage.removeItem(STORAGE_KEY_CURRENT_USER);
     location.href = 'login.html';
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const questions = initQuestionsIfEmpty();
+    renderQuestions(questions); // 기존 문제 출력 함수
+});
+
 
 // 문제 시작
 document.getElementById('btnStartQuiz').addEventListener('click', () => {

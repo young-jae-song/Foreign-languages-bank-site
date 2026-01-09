@@ -533,14 +533,18 @@ function generateDefaultQuestions() {
 }
 
 // localStorage에서 불러오거나, 없으면 300문제 생성
-let questions = loadQuestionsFromStorage();
-if (!questions) {
-    questions = generateDefaultQuestions();
-    saveQuestionsToStorage(questions);
+function initQuestionsIfEmpty() {
+    let questions = initQuestionsIfEmpty();
+    if (!questions) {
+        questions = generateDefaultQuestions();
+        saveQuestionsToStorage(questions);
+    }
+    if (questions.length > 0) {
+        QUESTION_ID_SEQ = Math.max(...questions.map(q => q.id)) + 1;
+    }
+    return questions;
 }
-if (questions.length > 0) {
-    QUESTION_ID_SEQ = Math.max(...questions.map(q => q.id)) + 1;
-}
+
 
 // ===== 2. 테이블 렌더링 =====
 const tableBody = document.querySelector('#questionTable tbody');
