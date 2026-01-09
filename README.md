@@ -35,7 +35,7 @@
 - OS: Windows / macOS
 - Node.js: 18.x 이상
 - Browser: Chrome 권장
-
+- Visual Studio Code
 ---
 
 ### 4. 프로젝트 구조
@@ -55,21 +55,20 @@ startbootstrap-sb-admin-2-gh-pages/
 
 ## 5. 프로젝트 실행 방법
 
-### 5-1. 프로젝트 경로 이동
-
+### 5-1. VSC 프로그램에 터미널 활성화(node.js설치 확인)
 ```bash
-cd 다운로드/캡스톤디자인/startbootstrap-sb-admin-2-gh-pages
+node -v
 ```
 
-### 5-2. 의존성 설치
-npm install
-
-### 5-3. 서버 실행
+### 5-2. 서버 실행
+```bash
 node server.js
+```
 
-### 5-4. 접속 주소
+### 5-3. 접속 주소
+```bash
 http://localhost:3000
-
+```
 ---
 
 ### 6. 주요 기능 요약
